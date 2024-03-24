@@ -77,3 +77,19 @@ exports.updateLocation = asyncHandler(async (req, res) => {
     res.status(400).json(new AppError("Unable to Update the Location", 400));
   }
 });
+
+exports.deleteLocation = asyncHandler(async (req, res) => {
+  try {
+    const location = await Location.findById(req.params.id);
+
+    if (!location) {
+      res.json(new AppError("Location not found", 404));
+    }
+
+    await Location.findByIdAndDelete(req.params.id);
+
+    res.status(204).json({ status: "success", data: null });
+  } catch {
+    res.status(400).json(new AppError("Unable to delete the Location", 400));
+  }
+});
