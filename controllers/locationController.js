@@ -2,15 +2,23 @@ const asyncHandler = require("express-async-handler");
 const Location = require("../models/locationModel");
 
 exports.getAllLocations = asyncHandler(async (req, res) => {
-  const locations = await Location.find();
+  try {
+    const locations = await Location.find();
 
-  res.status(200).json({
-    status: "success",
-    results: location.length,
-    data: {
-      locations,
-    },
-  });
+    res.status(200).json({
+      status: "success",
+      results: locations.length,
+      data: {
+        locations,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "error",
+      message: "Failed to get all locations",
+      error: err.message,
+    });
+  }
 });
 exports.createLocation = asyncHandler(async (req, res) => {
   console.log(req.body.name);
