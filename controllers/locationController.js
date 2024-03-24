@@ -34,7 +34,6 @@ exports.getLocation = asyncHandler(async (req, res) => {
       data: { location },
     });
   } catch (err) {
-    console.log(err);
     res.status(400).json(AppError("Unable to create the Location", 400));
   }
 });
@@ -55,7 +54,26 @@ exports.createLocation = asyncHandler(async (req, res) => {
       },
     });
   } catch (err) {
-    console.log(err);
     res.status(400).json(new AppError("Unable to create the Location", 400));
+  }
+});
+
+exports.updateLocation = asyncHandler(async (req, res) => {
+  try {
+    const location = await Location.findById(req.params.id);
+
+    if (!location) {
+      res.status(404).json(new AppError("location not found"));
+    }
+
+    const updatedLocation = await Location.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+
+    res.status(200).json({ status: "success", data: { updatedLocation } });
+  } catch (err) {
+    res.status(400).json(new AppError("Unable to Update the Location", 400));
   }
 });

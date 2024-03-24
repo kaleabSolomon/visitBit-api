@@ -3,6 +3,7 @@ const {
   getAllLocations,
   createLocation,
   getLocation,
+  updateLocation,
 } = require("../controllers/locationController");
 
 const router = express.Router();
