@@ -21,7 +21,6 @@ exports.getAllLocations = asyncHandler(async (req, res) => {
   }
 });
 exports.createLocation = asyncHandler(async (req, res) => {
-  console.log(req.body.name);
   try {
     const location = await Location.create({
       name: req.body.name,
@@ -31,7 +30,6 @@ exports.createLocation = asyncHandler(async (req, res) => {
       imageCover: req.body.imageCover,
       images: req.body.images,
     });
-    console.log("creating this shit");
     res.status(201).json({
       status: "successs",
       data: {
