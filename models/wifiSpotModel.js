@@ -30,6 +30,10 @@ const wifiSpotSchema = new mongoose.Schema({
   },
 });
 
+wifiSpotSchema.pre("save", async function (next) {
+  this.name = "WIFI";
+});
+
 const WifiSpot = mongoose.model("WifiSpot", wifiSpotSchema);
 
 module.exports = WifiSpot;
