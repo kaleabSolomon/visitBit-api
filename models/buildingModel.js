@@ -24,11 +24,11 @@ const buildingSchema = new mongoose.Schema({
     maxLength: [100, "A description cannot have more than 100 characters"],
     required: true,
   },
-  relativeBuilding: {
+  relativeLocation: {
     type: String,
     maxLength: [
       100,
-      "A relative building cannot have more than 100 characters",
+      "A relative location cannot have more than 100 characters",
     ],
   },
   category: {

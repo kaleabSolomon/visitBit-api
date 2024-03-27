@@ -36,25 +36,35 @@ exports.getBuilding = asyncHandler(async (req, res) => {
   }
 });
 exports.createBuilding = asyncHandler(async (req, res) => {
-  try {
-    const building = await Building.create({
-      name: req.body.name,
-      coordinates: req.body.coordinates,
-      description: req.body.description,
-      category: req.body.category,
-      imageCover: req.body.imageCover,
-      images: req.body.images,
-    });
-    res.status(201).json({
-      status: "success",
-      data: {
-        building,
-      },
-    });
-  } catch (err) {
+  const missingFields = [];
+  const { name, coordinates, description, category, imageCover } = req.body;
+
+  if (!name) missingFields.push("name");
+  if (!coordinates) missingFields.push("coordinates");
+  if (!description) missingFields.push("description");
+  if (!category) missingFields.push("category");
+  if (!imageCover) missingFields.push("cover image");
+
+  if (missingFields.length > 0) {
     res.status(400);
-    throw new AppError("Unable to create the Building");
+    throw new AppError(`missing fields: ${missingFields.join(",")}`);
   }
+
+  const building = await Building.create({
+    name,
+    coordinates,
+    description: req.body.description,
+    relativeLocation: req.body.relativeLocation,
+    category,
+    imageCover,
+    images: req.body.images,
+  });
+  res.status(201).json({
+    status: "success",
+    data: {
+      building,
+    },
+  });
 });
 
 exports.updateBuilding = asyncHandler(async (req, res) => {
