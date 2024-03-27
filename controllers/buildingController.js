@@ -20,19 +20,20 @@ exports.getAllBuildings = asyncHandler(async (req, res) => {
 });
 
 exports.getBuilding = asyncHandler(async (req, res) => {
-  try {
-    const building = await Building.findById(req.params.id);
-    if (!building) {
-      res.status(404).json(new AppError("building not found"));
-    }
+  const building = await Building.findById(req.params.id);
+  if (!building) {
+    res.status(404);
+    throw new AppError("building not found");
+  }
 
+  try {
     res.status(200).json({
       status: "success",
       data: { building },
     });
   } catch (err) {
     res.status(400);
-    throw new AppError("Failed to get building");
+    throw new AppError("unable to fetch building");
   }
 });
 exports.createBuilding = asyncHandler(async (req, res) => {
@@ -49,32 +50,36 @@ exports.createBuilding = asyncHandler(async (req, res) => {
     res.status(400);
     throw new AppError(`missing fields: ${missingFields.join(",")}`);
   }
-
-  const building = await Building.create({
-    name,
-    coordinates,
-    description: req.body.description,
-    relativeLocation: req.body.relativeLocation,
-    category,
-    imageCover,
-    images: req.body.images,
-  });
-  res.status(201).json({
-    status: "success",
-    data: {
-      building,
-    },
-  });
+  try {
+    const building = await Building.create({
+      name,
+      coordinates,
+      description: req.body.description,
+      relativeLocation: req.body.relativeLocation,
+      category,
+      imageCover,
+      images: req.body.images,
+    });
+    res.status(201).json({
+      status: "success",
+      data: {
+        building,
+      },
+    });
+  } catch (err) {
+    res.status(400);
+    throw new AppError("Unable to create Building");
+  }
 });
 
 exports.updateBuilding = asyncHandler(async (req, res) => {
+  const building = await Building.findById(req.params.id);
+
+  if (!building) {
+    res.status(404);
+    throw new AppError("building not found");
+  }
   try {
-    const building = await Building.findById(req.params.id);
-
-    if (!building) {
-      res.status(404).json(new AppError("building not found"));
-    }
-
     const updatedBuilding = await Building.findByIdAndUpdate(
       req.params.id,
       req.body,
@@ -89,13 +94,12 @@ exports.updateBuilding = asyncHandler(async (req, res) => {
 });
 
 exports.deleteBuilding = asyncHandler(async (req, res) => {
+  const building = await Building.findById(req.params.id);
+
+  if (!building) {
+    res.json(new AppError("Building not found", 404));
+  }
   try {
-    const building = await Building.findById(req.params.id);
-
-    if (!building) {
-      res.json(new AppError("Building not found", 404));
-    }
-
     await Building.findByIdAndDelete(req.params.id);
 
     res.status(204).json({ status: "success", data: null });
