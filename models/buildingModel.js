@@ -47,17 +47,16 @@ const buildingSchema = new mongoose.Schema({
       ],
       message: "Invalid Category",
     },
-
-    imageCover: {
-      type: String,
-      required: [true, "A building Should have a cover image"],
-    },
-    images: [String],
-    createdAt: {
-      type: Date,
-      default: Date.now(),
-      select: false,
-    },
+  },
+  imageCover: {
+    type: String,
+    required: [true, "A building Should have a cover image"],
+  },
+  images: [String],
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+    select: false,
   },
 });
 
