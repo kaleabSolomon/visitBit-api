@@ -1,7 +1,7 @@
 const express = require("express");
 const connectDB = require("./config/connectDB");
 const errorHandler = require("./middleware/errorHandler");
-const locationRoutes = require("./routes/locationRoutes");
+const buildingRoutes = require("./routes/buildingRoutes");
 const dotenv = require("dotenv").config();
 
 connectDB();
@@ -14,7 +14,7 @@ process.on("uncaughtException", (err) => {
 });
 app.use(express.json());
 
-app.use("/api/v1/locations", locationRoutes);
+app.use("/api/v1/buildings", buildingRoutes);
 app.use(errorHandler);
 const port = process.env.PORT || 3000;
 
