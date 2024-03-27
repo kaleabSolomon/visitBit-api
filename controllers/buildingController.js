@@ -14,11 +14,8 @@ exports.getAllBuildings = asyncHandler(async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(400).json({
-      status: "error",
-      message: "Failed to get all buildings",
-      error: err.message,
-    });
+    res.status(400);
+    throw new AppError("Failed to get all buildings");
   }
 });
 
@@ -34,7 +31,8 @@ exports.getBuilding = asyncHandler(async (req, res) => {
       data: { building },
     });
   } catch (err) {
-    res.status(400).json(AppError("Unable to create the Building", 400));
+    res.status(400);
+    throw new AppError("Failed to get building");
   }
 });
 exports.createBuilding = asyncHandler(async (req, res) => {
@@ -54,7 +52,8 @@ exports.createBuilding = asyncHandler(async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(400).json(new AppError("Unable to create the Building", 400));
+    res.status(400);
+    throw new AppError("Unable to create the Building");
   }
 });
 
@@ -74,7 +73,8 @@ exports.updateBuilding = asyncHandler(async (req, res) => {
 
     res.status(200).json({ status: "success", data: { updatedBuilding } });
   } catch (err) {
-    res.status(400).json(new AppError("Unable to Update the Building", 400));
+    res.status(400);
+    throw new AppError("Unable to update building");
   }
 });
 
@@ -90,6 +90,7 @@ exports.deleteBuilding = asyncHandler(async (req, res) => {
 
     res.status(204).json({ status: "success", data: null });
   } catch {
-    res.status(400).json(new AppError("Unable to delete the Building", 400));
+    res.status(400);
+    throw new AppError("Unable to delete building");
   }
 });
