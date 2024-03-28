@@ -39,7 +39,20 @@ exports.getWifiSpot = asyncHandler(async (req, res) => {
 });
 
 exports.createWifiSpots = asyncHandler(async (req, res) => {
-  res.status(201).json({
-    message: "creation success",
-  });
+  if (!req.body.coordinates) {
+    res.status(400);
+    throw new AppError("Absolute location is mandatory");
+  }
+  try {
+    const wifiSpot = await WifiSpot.create(req.body);
+    res.status(201).json({
+      status: "success",
+      data: {
+        wifiSpot,
+      },
+    });
+  } catch (err) {
+    res.status(400);
+    throw new AppError("Unable to create the location");
+  }
 });
