@@ -1,4 +1,5 @@
-const errorHandler = (err, req, res, next) => {
+const AppError = require("../utils/AppError");
+exports.errorHandler = (err, req, res, next) => {
   const statusCode = res.statusCode ? res.statusCode : 500;
   switch (statusCode) {
     case 400:
@@ -46,4 +47,13 @@ const errorHandler = (err, req, res, next) => {
   }
 };
 
-module.exports = errorHandler;
+exports.handleInvalidRequestBody = (err, req, res, next) => {
+  if (err instanceof SyntaxError) {
+    // Handle JSON parsing errors
+    res.status(400);
+    throw new AppError("Invalid JSON format");
+  } else {
+    // Handle other unexpected errors
+    next(err);
+  }
+};
