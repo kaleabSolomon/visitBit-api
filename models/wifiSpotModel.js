@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const wifiSpotSchema = new mongoose.Schema({
-  name: String,
   coordinates: {
     long: {
       type: Number,
@@ -32,6 +31,7 @@ const wifiSpotSchema = new mongoose.Schema({
 
 wifiSpotSchema.pre("save", async function (next) {
   this.name = "WIFI";
+  next();
 });
 
 const WifiSpot = mongoose.model("WifiSpot", wifiSpotSchema);
