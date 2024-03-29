@@ -6,6 +6,7 @@ const buildingRoutes = require("./routes/buildingRoutes");
 const wifiSpotRoutes = require("./routes/wifiSpotRoutes");
 const restroomRoutes = require("./routes/restroomRoutes");
 const waterSpotRoutes = require("./routes/waterSpotRoutes");
+const searchRoutes = require("./routes/searchRoutes");
 const dotenv = require("dotenv").config();
 
 connectDB();
@@ -22,6 +23,7 @@ app.use("/api/v1/buildings", buildingRoutes);
 app.use("/api/v1/wifiSpots", wifiSpotRoutes);
 app.use("/api/v1/restrooms", restroomRoutes);
 app.use("/api/v1/waterSpots", waterSpotRoutes);
+app.use("/api/v1/search", searchRoutes);
 app.use(handleInvalidRequestBody);
 app.use(errorHandler);
 
