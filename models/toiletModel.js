@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const wifiSpotSchema = new mongoose.Schema({
+const toiletSchema = new mongoose.Schema({
   name: String,
   coordinates: {
     long: {
@@ -11,14 +11,19 @@ const wifiSpotSchema = new mongoose.Schema({
       type: Number,
       required: true,
     },
-    // TODO: lat and long aren't actually required
   },
+
   relativeLocation: {
     type: String,
     maxLength: [
       100,
       "A relative location cannot have more than 100 characters",
     ],
+  },
+  gender: {
+    type: String,
+    required: [true, "Specify one of Male, Female or Unisex"],
+    enum: ["male", "female", "unisex"],
   },
   createdAt: {
     type: Date,
@@ -27,11 +32,6 @@ const wifiSpotSchema = new mongoose.Schema({
   },
 });
 
-wifiSpotSchema.pre("save", async function (next) {
-  this.name = "WIFI";
-  next();
-});
+const Toilet = mongoose.model("Toilet", toiletSchema);
 
-const WifiSpot = mongoose.model("WifiSpot", wifiSpotSchema);
-
-module.exports = WifiSpot;
+module.exports = Toilet;
