@@ -86,7 +86,7 @@ exports.deleteRestroom = asyncHandler(async (req, res) => {
   }
   try {
     await Restroom.findByIdAndDelete(req.params.id);
-    res.status(204);
+    res.status(204).json({ status: "success", data: null });
   } catch {
     res.status(400);
     throw new AppError("Unable to delete the restroom");
