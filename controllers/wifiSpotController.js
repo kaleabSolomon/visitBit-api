@@ -79,13 +79,13 @@ exports.updateWifiSpot = asyncHandler(async (req, res) => {
 });
 
 exports.deleteWifiSpot = asyncHandler(async (req, res) => {
-  const WifiSpot = await WifiSpot.findById(req.params.id);
+  const wifiSpot = await WifiSpot.findById(req.params.id);
 
   if (!wifiSpot) {
     res.json(new AppError("Wifi spot not found", 404));
   }
   try {
-    await wifiSpot.findByIdAndDelete(req.params.id);
+    await WifiSpot.findByIdAndDelete(req.params.id);
 
     res.status(204).json({ status: "success", data: null });
   } catch {

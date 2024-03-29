@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const toiletSchema = new mongoose.Schema({
+const restroomSchema = new mongoose.Schema({
   name: String,
   coordinates: {
     long: {
@@ -31,7 +31,10 @@ const toiletSchema = new mongoose.Schema({
     select: false,
   },
 });
+restroomSchema.pre("save", async function (next) {
+  this.name = "Restroom";
+  next();
+});
+const Restroom = mongoose.model("Restroom", restroomSchema);
 
-const Toilet = mongoose.model("Toilet", toiletSchema);
-
-module.exports = Toilet;
+module.exports = Restroom;
